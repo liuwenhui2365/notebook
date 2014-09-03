@@ -310,6 +310,7 @@ pthread_attr_getinheritsched(3C) 将返回由pthread_attr_setinheritsched() 设�
 
 - 设置调度策略
 请使用 pthread_attr_setschedpolicy(3C) 设置调度策略。POSIX 标准指定 SCHED_FIFO(先入先出)、SCHED_RR(循环)或SCHED_OTHER(实现定义的方法)的调度策略属性。
+
 >- 函数原型：int pthread_attr_setschedpolicy(pthread_attr_t *tattr, int policy);该函数成功完成后将返回零。其他任何返回值都表示出现了错误。如果出现以下任一情况,该函数将失败并返回对应的值：
 >>- EINVAL 描述: 尝试将 tattr 设置为无效的值。
 >>- ENOTSUP 描述: 尝试将该属性设置为不受支持的值。
