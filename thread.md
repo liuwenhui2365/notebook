@@ -133,6 +133,7 @@ pthread_key_create() 在成功完成之后返回零。其他任何返回值都�
 时,生成的结果将是不确定的。程序员在调用删除函数之前必须释放所有线程特定资源。删除函数不会调用任何析构函数。反复调用 pthread_key_create() 和 pthread_key_delete() 可能会产生问题。如果pthread_key_delete() 将键标记为无效,而之后 key 的值不再被重用,那么反复调用它们就会出现问题。对于每个所需的键,应当只调用 pthread_key_create() 一次。
 pthread_key_delete() 在成功完成之后返回零。其他任何返回值都表示出现了错误。如果出现以下情况,pthread_key_delete() 将失败并返回相应的值：EINVAL 描述: key 的值无效。
 - 使用 pthread_setspecific(3C)可以为指定线程特定数据键设置线程特定绑定。
+
 >函数原型int pthread_setspecific(pthread_key_t key, const void *value);
 pthread_setspecific()在成功完成之后返回零。其他任何返回值都表示出现了错误。如果出现以下任一情况,pthread_setspecific() 将失败并返回相应的值:
 >> - ENOMEM 描述: 虚拟内存不足。
@@ -309,6 +310,7 @@ pthread_attr_getinheritsched(3C) 将返回由pthread_attr_setinheritsched() 设�
 
 - 设置调度策略
 请使用 pthread_attr_setschedpolicy(3C) 设置调度策略。POSIX 标准指定 SCHED_FIFO(先入先出)、SCHED_RR(循环)或SCHED_OTHER(实现定义的方法)的调度策略属性。
+
 >- 函数原型：int pthread_attr_setschedpolicy(pthread_attr_t *tattr, int policy);该函数成功完成后将返回零。其他任何返回值都表示出现了错误。如果出现以下任一情况,该函数将失败并返回对应的值：
 >>- EINVAL 描述: 尝试将 tattr 设置为无效的值。
 >>- ENOTSUP 描述: 尝试将该属性设置为不受支持的值。
