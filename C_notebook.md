@@ -198,9 +198,31 @@ result：
 
 从该例中得出指针始终只能指向一个不能同时指向两个不同的变量，每个指针都有一个不变的地址，和一个值，而这个指针的值可能为变量的地址，也可能为一级指针的地址，这样当前指针就形成了二级指针，但当二级指针最终指向的值发生变化时，除本身值以外，其他都不变。 
 
+- 关于指针定义
+
+如下例程
+ 
+	 #include < stdio.h>
+	 int main(void)
+	 {
+	   int a=1;
+	   int *p =a;
+	   printf("a = %d\n",a);
+	   printf("p = %d\n&p=%p\n",p,&p); 
+	   printf("*p= %d\n",*p);   
+	   return 0;
+	}
+
+result:
+	
+	a = 1
+	p = 1
+	&p=0x7fff3d6ac440
+	Segmentation fault (core dumped)
+
 **定义指针的时候注意：**int ×a =  &b 相当于int ×a;  a =&b；
 int ×a = b（b为整型变量）int ××a = b 都会导致段错误，无法获取指针的值和指向的值。int ×a =  ×b也会出现该错误。
-
+int *a = address; 
 
 structure
 ----------------------------
