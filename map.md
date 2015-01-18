@@ -17,6 +17,11 @@ Map 接口提供三种collection 视图，允许以键集、值集或键-值映�
 
 **初始容量，加载因子**是影响HashMap性能的重要参数，其中容量表示哈希表中桶的数量，初始容量是创建哈希表时的容量，加载因子是哈希表在其容量自动增加之前可以达到多满的一种尺度，它衡量的是一个散列表的空间的使用程度，负载因子越大表示散列表的装填程度越高，反之愈小。对于使用链表法的散列表来说，查找一个元素的平均时间是O(1+a)，因此如果负载因子越大，对空间的利用更充分，然而后果是查找效率的降低；如果负载因子太小，那么散列表的数据将过于稀疏，对空间造成严重浪费。系统默认负载因子为0.75，一般情况下我们是无需修改的。
 
+- 哈希表（Hash table，也叫散列表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。
+
+ - 哈希表hashtable(key，value)的做法其实很简单，就是把Key通过一个固定的算法函数既所谓的哈希函数转换成一个整型数字，然后就将该数字对数组长度进行取余，取余结果就当作数组的下标，将value存储在以该数字为下标的数组空间里。而当使用哈希表进行查询的时候，就是再次使用哈希函数将key转换为对应的数组下标，并定位到该空间获取value，如此一来，就可以充分利用到数组的定位性能进行数据定位。
+
+
 #HashMap
 
 一种**支持快速存取**的数据结构，HashMap底层实现还是数组，只是数组的每一项都是一条链。其中参数initialCapacity就代表了该数组的长度。其中Entry为HashMap的内部类，它包含了键key、值value、下一个节点next，以及hash值，这是非常重要的，正是由于Entry才构成了table数组的项为链表。
@@ -133,10 +138,206 @@ Map 接口提供三种collection 视图，允许以键集、值集或键-值映�
       >- 若两个对象的equals不等，则可以认为两个对象不等，否则认为他们相等。
 
 
+#HashTable
+
+HashTable继承Dictionary类，实现Map接口。其中Dictionary类是任何可将键映射到相应值的类（如Hashtable）的抽象父类。每个键和每个值都是一个对象。在任何一个 Dictionary 对象中，每个键至多与一个值相关联。Map是"key-value键值对"接口。
+
+- HashTable采用"拉链法"实现哈希表，它定义了几个重要的参数：table、count、threshold、loadFactor、modCount。
+
+ >- table：为一个Entry[]数组类型，Entry代表了“拉链”的节点，每一个Entry代表了一个键值对，哈希表的"key-value键值对"都是存储在Entry数组中的。
+
+ >- count：HashTable的大小，注意这个大小并不是HashTable的容器大小，而是他所包含Entry键值对的数量。
+
+ >- threshold：Hashtable的阈值，用于判断是否需要调整Hashtable的容量。threshold的值="容量*加载因子"。
+
+ >- loadFactor：加载因子。
+
+ >- modCount：用来实现“fail-fast”机制的（也就是快速失败）。所谓快速失败就是在并发集合中，其进行迭代操作时，若有其他线程对其进行结构性的修改，这时迭代器会立马感知到，并且立即抛出ConcurrentModificationException异常，而不是等到迭代完成之后才告诉你
 
 
+- 在HashTabel中存在5个构造函数。
+
+>-  默认构造函数，容量为11，加载因子为0.75。
+
+>-  用指定初始容量和默认的加载因子 (0.75) 构造一个新的空哈希表。
+
+>- 用指定初始容量和指定加载因子构造一个新的空哈希表。其中initHashSeedAsNeeded方法用于初始化hashSeed参数，其中hashSeed用于计算    key的hash值，它与key的hashCode进行按位异或运算。这个hashSeed是一个与实例相关的随机值，主要用于解决hash冲突。
+
+ >- 构造一个与给定的 Map 具有相同映射关系的新哈希表。
 
 
+- put方法：将指定 key 映射到此哈希表中的指定 value。注意这里键key和值value都不可为空。   >put方法的整个处理流程是：计算key的hash值，根据hash值获得key在table数组中的索引位置，然后迭代该key处的Entry链表（我们暂且理解为链表），若该链表中存在一个这个的key对象，那么就直接替换其value值即可，否则在将改key-value节点插入该index索引位置处。
+
+ - 在HashTabled的put方法中有两个地方需要注意：
+
+  >- HashTable的扩容操作，在put方法中，如果需要向table[]中添加Entry元素，会首先进行容量校验，如果容量已经达到了阀值，HashTabl    e就会进行扩容处理rehash()，如下:
+	 int newCapacity = (oldCapacity << 1) + 1;
+   在这个rehash()方法中我们可以看到容量扩大两倍+1，同时需要将原来HashTable中的元素一一复制到新的HashTable中，这个过程是	     比较消耗时间的，同时还需要重新计算hashSeed的，毕竟容量已经变了。
+
+  >- 其实这里是我的一个疑问，在计算索引位置index时，HashTable进行了一个与运算过程（hash & 0x7FFFFFFF），为什么需要做一步操作，这么做有什么好处？这里hashSeed发挥了作用。
+
+
+- 相对于put方法，get方法就会比较简单，处理过程就是计算key的hash值，判断在table数组中的索引位置，然后迭代链表，匹配直到找到相对应key的value,若没有找到返回null。
+
+- HashTable和HashMap存在很多的相同点，但是他们还是有几个比较重要的不同点。
+
+     >- 我们从他们的定义就可以看出他们的不同，HashTable基于Dictionary类，而HashMap是基于AbstractMap。Dictionary是任何可将键映射到相应值的类的抽象父类，而AbstractMap是基于Map接口的骨干实现，它以最大限度地减少实现此接口所需的工作。
+
+     >- HashMap可以允许存在一个为null的key和任意个为null的value，但是HashTable中的key和value都不允许为null。
+
+     >>- 当HashMap遇到为null的key时，它会调用putForNullKey方法来进行处理。对于value没有进行任何处理，只要是对象都可以。
+
+	if (key == null)
+	            return putForNullKey(value);
+	      而当HashTable遇到null时，他会直接抛出NullPointerException异常信息。
+	
+	if (value == null) {
+	            throw new NullPointerException();
+	        }
+     
+     >>- Hashtable的方法是同步的，而HashMap的方法不是。所以有人一般都建议如果是涉及到多线程同步时采用HashTable，没有涉及就采         用HashMap，但是在Collections类中存在一个静态方法：synchronizedMap()，该方法创建了一个线程安全的Map对象，并把它作为一         个封装的对象来返回，所以通过Collections类的synchronizedMap方法是可以我们你同步访问潜在的HashMap。
+     
+     
+     
+#HashSet
+
+对于HashSet而言，它是基于HashMap来实现的，底层采用HashMap来保存元素。
+
+- HashSet继承AbstractSet类，实现Set、Cloneable、Serializable接口。其中AbstractSet提供 Set 接口的骨干实现，从而最大限度地减少了实现此接口所需的工作。Set接口是一种不包括重复元素的Collection，它维持它自己的内部排序，所以随机访问没有任何意义。
+
+- 构造函数
+        
+        /* 初始化一个空的HashMap，并使用默认初始容量为16和加载因子0.75。
+         */
+        public HashSet() {
+            map = new HashMap<>();
+        }
+        
+        /**
+         * 构造一个包含指定 collection 中的元素的新 set。
+         */
+        public HashSet(Collection<? extends E> c) {
+            map = new HashMap<>(Math.max((int) (c.size()/.75f) + 1, 16));
+            addAll(c);
+        }
+        
+        /**
+         * 构造一个新的空 set，其底层 HashMap 实例具有指定的初始容量和指定的加载因子
+         */
+        public HashSet(int initialCapacity, float loadFactor) {
+            map = new HashMap<>(initialCapacity, loadFactor);
+        }
+           
+        /**
+         * 构造一个新的空 set，其底层 HashMap 实例具有指定的初始容量和默认的加载因子（0.75）。
+         */
+        public HashSet(int initialCapacity) {
+           map = new HashMap<>(initialCapacity);
+        }
+           
+        /**
+         * 在API中我没有看到这个构造函数，今天看源码才发现（原来访问权限为包权限，不对外公开的）
+         * 以指定的initialCapacity和loadFactor构造一个新的空链接哈希集合。
+         * dummy 为标识 该构造函数主要作用是对LinkedHashSet起到一个支持作用
+         */
+        HashSet(int initialCapacity, float loadFactor, boolean dummy) {
+           map = new LinkedHashMap<>(initialCapacity, loadFactor);
+        }
+
+从构造函数中可以看出HashSet所有的构造都是构造出一个新的HashMap，其中最后一个构造函数，为包访问权限是不对外公开，仅仅只在使用
+LinkedHashSet时才会发生作用。
+
+- iterator()方法返回对此 set 中元素进行迭代的迭代器。返回元素的顺序并不是特定的。底层调用HashMap的keySet返回所有的key，这点反应了HashSet中的所有元素都是保存在HashMap的key中，value则是使用的PRESENT对象，该对象为static final。
+
+- size()返回此 set 中的元素的数量（set 的容量）。底层调用HashMap的size方法，返回HashMap容器的大小。
+
+- isEmpty()，判断HashSet()集合是否为空，为空返回 true，否则返回false。
+
+- contains()，判断某个元素是否存在于HashSet()中，存在返回true，否则返回false。更加确切的讲应该是要满足这种关系才能返回true：(   o==null ? e==null : o.equals(e))。底层调用containsKey判断HashMap的key值是否为空。
+  
+- add()如果此 set 中尚未包含指定元素，则添加指定元素。如果此Set没有包含满足(e==null ? e2==null : e.equals(e2)) 	的e2时，则将e2添加到Set中，否则不添加且返回false。由于底层使用HashMap的put方法将key=e，value=PRESENT构建成key-value键值对，当此e存在于HashMap的key中，则value将会覆盖原有value，但是key保持不变，所以如果将一个已经存在的e元素添加中HashSet中，新添加的元素是不会保存到HashMap中，所以这就满足了HashSet中元素不会重复的特性。
+
+- remove()如果指定元素存在于此 set 中，则将其移除。底层使用HashMap的remove方法删除指定的Entry。
+
+- clear()从此 set 中移除所有元素。底层调用HashMap的clear方法清除所有的Entry。
+
+- clone()返回此 HashSet 实例的浅表副本：并没有复制这些元素本身。
+
+
+#TreeMap
+
+
+- TreeMap的实现是红黑树算法的实现,红黑树又称红-黑二叉树，它首先是一颗二叉树，它具体二叉树所有的特性。同时红黑树更是一颗自平衡的排序二叉树。<关于红黑树的详细理解可以参考：http://www.cnblogs.com/yangecnu/p/Introduce-Red-Black-Tree.html>
+
+- 红黑树顾名思义就是节点是红色或者黑色的平衡二叉树，它通过颜色的约束来维持着二叉树的平衡。对于一棵有效的红黑树二叉树而言我们必须增加如下规则：
+
+>- 每个节点都只能是红色或者黑色
+
+>- 根节点是黑色
+
+>- 每个叶节点（NIL节点，空节点）是黑色的。
+
+>- 如果一个结点是红的，则它两个子节点都是黑的。也就是说在一条路径上不能出现相邻的两个红色结点。
+
+>- 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。
+
+- 这些约束强制了红黑树的关键性质:  		 从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这棵树大致上是平衡的。因为操作比如插入、删除和查找某个值的最坏情况时间都要求与树的高度成比例，这个在高度上的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树。所以红黑树它是复杂而高效的，其检索效率O(log n)。
+
+- 红黑树常用的操作：
+
+>- 所谓左旋转，就是将新增节点（N）当做其父节点（P），将其父节点P当做新增节点（N）的左子节点。即：G.left ---> N ,N.left ---> P。
+>- 所谓右旋转即，P.right ---> G、G.parent ---> P。
+>- 着色就是改变该节点的颜色，在红黑树中，它是依靠节点的颜色来维持平衡的。
+
+- TreeMap继承AbstractMap，实现NavigableMap、Cloneable、Serializable三个接口。其中AbstractMap表明TreeMap为一个Map即支持key-value的集合， NavigableMap（更多）则意味着它支持一系列的导航方法，具备针对给定搜索目标返回最接近匹配项的导航方法 。
+
+- TreeMap中同时也包含了如下几个重要的属性：
+
+>      比较器，因为TreeMap是有序的，通过comparator接口我们可以对TreeMap的内部排序进行精密的控制
+        private final Comparator<? super K> comparator;
+        //TreeMap红-黑节点，为TreeMap的内部类
+        private transient Entry<K,V> root = null;
+        //容器大小
+        private transient int size = 0;
+        //TreeMap修改次数
+        private transient int modCount = 0;
+        //红黑树的节点颜色--红色
+        private static final boolean RED = false;
+        //红黑树的节点颜色--黑色
+        private static final boolean BLACK = true;
+
+- 对于叶子节点Entry是TreeMap的内部类，它有几个重要的属性：
+
+>       键
+        K key;
+        //值
+        V value;
+        //左孩子
+        Entry<K,V> left = null;
+        //右孩子
+        Entry<K,V> right = null;
+        //父亲
+        Entry<K,V> parent;
+        //颜色
+        boolean color = BLACK;
+
+- 在TreeMap的put()的实现方法中主要分为两个步骤，第一：构建排序二叉树，第二：平衡二叉树。
+
+> 对于排序二叉树的创建，其添加节点的过程如下：
+
+>- 以根节点为初始节点进行检索。
+
+>- 与当前节点进行比对，若新增节点值较大，则以当前节点的右子节点作为新的当前节点。否则以当前节点的左子节点作为新的当前节点。
+
+>- 循环递归2步骤知道检索出合适的叶子节点为止。
+
+>- 将新增节点与3步骤中找到的节点进行比对，如果新增节点较大，则添加为右子节点；否则添加为左子节点。
+
+
+- Delete（）方法
+
+ 针对于红黑树的增加节点而言，删除显得更加复杂，使原本就复杂的红黑树变得更加复杂。同时删除节点和增加节点一样，同样是找到删除的节点，删除之后调整红黑树。但是这里的删除节点并不是直接删除，而是通过走了“弯路”通过一种捷径来删除的：找到被删除的节点D的子节点C，用C来替代D，不是直接删除D，因为D被C替代了，直接删除C即可。所以这里就将删除父节点D的事情转变为了删除子节点C的事情，这样处理就将复杂的删除事件简单化了。子节点C的规则是：右分支最左边，或者 左分支最右边的。
+treeMap删除节点的步骤是：找到一个替代子节点C来替代P，然后直接删除C，最后调整这棵红黑树。下面代码是寻找替代节点、删除替代节点。
 
 
 
