@@ -1,2 +1,6 @@
-1.当出现ViewPager不能正常显示内容时，如果基本框架都正确的时候，检查在其适配器里面是不是有isViewFromObject被重写了，只要把它删除即可。
-因为继承的那个适配器类已经对那个方法处理过，所以不需要再次重写。
+1.当出现ViewPager不能正常显示内容时，如果基本框架都正确的时候，检查在其适配器里面是不是有isViewFromObject被重写了，只要把
+它删除即可。因为继承的那个适配器类已经对那个方法处理过，所以不需要再次重写。
+2.framelayout里面如果有baseFragment继承它，那么在它的布局里面还有FrameLayout的时候就不能继承BaseFragment了，只能继承
+Fragment否则会出现页面卡顿无法运行。当然如果有FrameLayout的布局类没有继承FrameActivity而是继承Activity还是会出现黑屏现象。
+3.采用WebView里面的一个方法setWebClient()，WebViewClient中的shouldOverrideUrlLoading()方法，实现了让新打开的网页在当前的
+WebView中进行显示，而不是调用Android系统自带的浏览器进行访问
