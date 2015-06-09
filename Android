@@ -9,4 +9,22 @@ handles Fragments contained within only the Fragment that it was added to.
 **同时注意:Fragment里面嵌套Fragment 的话：一定要用getChildFragmentManager();**
 4.采用WebView里面的一个方法setWebClient()，WebViewClient中的shouldOverrideUrlLoading()方法，实现了让新打开的网页在当前的
 WebView中进行显示，而不是调用Android系统自带的浏览器进行访问
+5.ViewPager嵌套引起子ViewPager无法触摸问题是通过在子ViewPager的onTouchEvent中添加getParent().requestDisallowInterceptTouchEvent(true);	
+getParent().requestDisallowInterceptTouchEvent(true);
+禁止父控件对touch event做intercept解决的。
+6.通常onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化保存。
+7.Fragment的beginTransaction的方法和replaceFrag的方法基本一致，使用的时候注意beginTransaction的对象调用的add或remove的方法一定是new过的对象，
+不能是空对象，否则出现解析异常。
+8.Android中的bundle对象用来传输数据和对象。它的用法和Intent传递数据的方式基本一致，采用键值对的方式存储。
+9.Activity的 onSaveInstanceState() 和 onRestoreInstanceState()并不是生命周期方法，它们不同于 onCreate()、onPause()等生命周期方法，它们并不一
+定会被触发。当应用遇到意外情况（如：内存不足、用户直接按Home键）由系统销毁一个Activity时，onSaveInstanceState() 会被调用。但是当用户主动去销
+毁一个Activity时，例如在应用中按返回键，onSaveInstanceState()就不会被调用。因为在这种情况下，用户的行为决定了不需要保存Activity的状态。通常
+onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化保存。	
+10.ViewPager与ViewFlipper的区别：
+A、ViewPager（android.support.v4.view.ViewPager）与ViewFlow都能够使用适配器（ViewPager--PagerAdapter；ViewFlow--BaseAdapter）进行大量数据的
+适配，并且ViewFlow也带有原点和标题的位置提示，二者比较相像；
+B、ViewFlipper使用时主要在有限的少数页面切换中比较合适，并且能够自定义每一个切换动画，用于一个应用间的画面切换比较合适，类似于ActvityGroup；
+C、ViewFlow由于提供源码，所以在扩展上更强，可根据需要自行定制，比如加入循环播放等；
+D、当需要再一系列不确定数据的View中滑动时，可以考虑使用ViewFlow；如果View数目确定，应该改用Fragments或者兼容库里的ViewPager。
+
 
