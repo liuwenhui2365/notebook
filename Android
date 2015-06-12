@@ -26,5 +26,40 @@ A、ViewPager（android.support.v4.view.ViewPager）与ViewFlow都能够使用�
 B、ViewFlipper使用时主要在有限的少数页面切换中比较合适，并且能够自定义每一个切换动画，用于一个应用间的画面切换比较合适，类似于ActvityGroup；
 C、ViewFlow由于提供源码，所以在扩展上更强，可根据需要自行定制，比如加入循环播放等；
 D、当需要再一系列不确定数据的View中滑动时，可以考虑使用ViewFlow；如果View数目确定，应该改用Fragments或者兼容库里的ViewPager。
+11.在程序中使用mImageView.setImageDrawable(getResources().对ImageView设置属性的时候，
+注意getDrawable(R.drawable.mlogo))设置ImageView的资源而非setBackground();
+XML中，在ImageView里对android:src="@drawable/mlogo"进行设置以上属性，
+而不是android:background,后者不会显示效果；
+12.有时候传入this作为上下文的时候回出错，可以使用getActivity（）的方法
+13.Android中设置圆角的时候bottomLeftRadius是右下角，而不是左下角。在SDK版本大于14的时候
+已经纠正了。
+14.设置点击的事件通过Id不仅可以控制控件还可以控制布局，通过布局实现点击事件只要点击布局里面
+的某个控件就可以触发。
+15.ProgressDialog设置为setCancelable(true)时，点击ProgressDialog以外的区域也可以让
+ProgressDialog dismiss掉。但有时我们不希望是这样的效果，于是将ProgressDialog设置
+setCancelable(false)，再点击ProgressDialog以外的区域就不会出现前面所说的情况了，然而这样以
+来再按返回键时就不起作用了，只能等待程序执行到dissmiss处为止。
+16.在Fragment中为listView适配器赋参数时可能用到布局解析器，可以直接在onCreateView()中传入，
+也可以在onViewCreated()获取到Activity的对象然后获取解析器的对象。
+17.如果要修改ListView的item的高度必须要设置android:minHeight="具体值"这样才行，直接设置高度无效．
+18.设置隐藏参数为View.GONE.TextView和ImageView一起使用，系统会提示不建议这样做，通过修改TextView
+的背景即可实现。
+19.java 中的instanceof 运算符是用来在运行时指出对象是否是特定类的一个实例。instanceof通过返回一个布尔值来指出，这个对象是否是这个特定类或者是它的子类的一个实例。
+ 用法：
+result = object instanceof class
+参数：
+Result：布尔类型。
+Object：必选项。任意对象表达式。
+Class：必选项。任意已定义的对象类。
+说明：如果 object 是 class 的一个实例，则 instanceof 运算符返回 true。如果 object 不是指定类的一个实例，或者 object 是 null，则返回 false。
+20.如果调用的是系统适配器没有自定义，那么布局也需要使用系统自带的才能实现数据填充，比如Spinner控件。
+继承ArrayAdapter时通过getView的方法为下拉布局添加数据，注意getItem（）来获取传进了的链表数据的每一项的值，填充到每一行子控件中。
+弹出来的下拉窗口，这个是复写ArrayAdapter的getDropDownView()方法来实现的，也可以通过新建一个下拉布局文件也可，
+该布局只能放控件不能设置布局类型，并且该布局只能是TextView，把它的ID传进去即可。
+简而言之就是设置下拉布局文件的ID必须是TextView的ID。
+21.如果两个控件的适配器要求一致的话，可以使用同一个适配器，然后只有new一个数据的对象即可。注意千万不能用原来的数据对象清空来实现，因为getView的方法在每次显示都会调用
+那么数据就会显示的是后面添加的。
+22.调用Dialog的时候会出现InvocationTargetException时，观察传进去的参数，该构造方法第一个参数为Activity的对象，不是上下文的对象。
+23.如果一个接口的方法没有被执行有两种情况，没有实例化接口的对象，或者没有声明实现接口里面的方法。
 
 
