@@ -61,5 +61,30 @@ Class：必选项。任意已定义的对象类。
 那么数据就会显示的是后面添加的。
 22.调用Dialog的时候会出现InvocationTargetException时，观察传进去的参数，该构造方法第一个参数为Activity的对象，不是上下文的对象。
 23.如果一个接口的方法没有被执行有两种情况，没有实例化接口的对象，或者没有声明实现接口里面的方法。
-
+24.handler的obtainMessage的使用：看源码的注释，
+/**
+* Returns a new {@link android.os.Message Message} from the global message pool. More efficient than
+* creating and allocating new instances. The retrieved message has its handler set to this instance (Message.target == this).
+* If you don't want that facility, just call Message.obtain() instead.
+*/
+这里我们的Message已经不是自己创建的了,而是从MessagePool拿的,省去了创建对象申请内存的开销。。。。。
+这里大家应该都明白了。所以以后使用的时候尽量使用 Message msg = handler.obtainMessage();的形式创
+建Message，不要自己New Message 至于message产生之后你使用obtainMessage 或者是 sendMessage 效率影响
+并不大.同时我们也要注意以后谈论性能的时候要找准位置,譬如这里性能的问题不是在调用 obtainMessage 和 sen
+dMessage 的方法上,而是调用他们之前对象的创建问题上。
+25.通过Calendar的工具类获取当前时间，首先获取该类的实例，然后通过get方法把
+Calendar的静态变量YEAR、MONTH等传进去即可。这里注意不能直接用该类实例的静态
+变量来获取，该变量的值只是键的值（一些整型数据），通过get方法来获取键对应的值。
+26.onKeyDown用来表示按住手机键的时候的事件。KeyEvent.KEYCODE_BACK表示
+返回键的事件发生。比如APP按两次退出的事件可以由该方法来执行。
+27.发送短信可以通过SmsManager类来执行，不需要进入系统短信界面，直接通过getDefault()获取该类的对象，
+然后把短信内容放入到该对象的divideMessage方法里面，进行短信内容拆分，然后遍历
+内容列表进行发送，通过sendTextMessage（）进行发送即可，该方法的第一个参数为对方手机号码
+。
+28.TextView通过系统自带的Html类的fromHtml方法中把网页字符串放进去，即可实现TextView显示网页。
+如果要显示网页中image标签采用Html的imageGetter和TagHandler的对象来显示图片。
+29.SpannableStringBuilder都可以将某段文本设置成一个Span，在Android中，Span表示一段文本的效果，例如，链接形式、图像、带背景的文本等。
+只是不同的是SpannableStringBuilder可以修改文本的内容。
+30.subString的索引包前不包后，大部分截取函数都是如此。
+31.ListView中适配器的getView方法里面尽量不要采用耗时操作，否则可能会出现卡顿的现象。
 
