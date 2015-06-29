@@ -28,11 +28,9 @@ C、ViewFlow由于提供源码，所以在扩展上更强，可根据需要自�
 D、当需要再一系列不确定数据的View中滑动时，可以考虑使用ViewFlow；如果View数目确定，应该改用Fragments或者兼容库里的ViewPager。
 11.在程序中使用mImageView.setImageDrawable(getResources().对ImageView设置属性的时候，
 注意getDrawable(R.drawable.mlogo))设置ImageView的资源而非setBackground();
-XML中，在ImageView里对android:src="@drawable/mlogo"进行设置以上属性，
-而不是android:background,后者不会显示效果；
+XML中，在ImageView里对android:src="@drawable/mlogo"进行设置以上属性，而不是android:background,后者不会显示效果；
 12.有时候传入this作为上下文的时候回出错，可以使用getActivity（）的方法
-13.Android中设置圆角的时候bottomLeftRadius是右下角，而不是左下角。在SDK版本大于14的时候
-已经纠正了。
+13.Android中设置圆角的时候bottomLeftRadius是右下角，而不是左下角。在SDK版本大于14的时候已经纠正了。
 14.设置点击的事件通过Id不仅可以控制控件还可以控制布局，通过布局实现点击事件只要点击布局里面
 的某个控件就可以触发。
 15.ProgressDialog设置为setCancelable(true)时，点击ProgressDialog以外的区域也可以让
@@ -54,8 +52,7 @@ Class：必选项。任意已定义的对象类。
 说明：如果 object 是 class 的一个实例，则 instanceof 运算符返回 true。如果 object 不是指定类的一个实例，或者 object 是 null，则返回 false。
 20.如果调用的是系统适配器没有自定义，那么布局也需要使用系统自带的才能实现数据填充，比如Spinner控件。
 继承ArrayAdapter时通过getView的方法为下拉布局添加数据，注意getItem（）来获取传进了的链表数据的每一项的值，填充到每一行子控件中。
-弹出来的下拉窗口，这个是复写ArrayAdapter的getDropDownView()方法来实现的，也可以通过新建一个下拉布局文件也可，
-该布局只能放控件不能设置布局类型，并且该布局只能是TextView，把它的ID传进去即可。
+弹出来的下拉窗口，这个是复写ArrayAdapter的getDropDownView()方法来实现的，也可以通过新建一个下拉布局文件也可，该布局只能放控件不能设置布局类型，并且该布局只能是TextView，把它的ID传进去即可。
 简而言之就是设置下拉布局文件的ID必须是TextView的ID。
 21.如果两个控件的适配器要求一致的话，可以使用同一个适配器，然后只有new一个数据的对象即可。注意千万不能用原来的数据对象清空来实现，因为getView的方法在每次显示都会调用
 那么数据就会显示的是后面添加的。
@@ -72,39 +69,28 @@ Class：必选项。任意已定义的对象类。
 建Message，不要自己New Message 至于message产生之后你使用obtainMessage 或者是 sendMessage 效率影响
 并不大.同时我们也要注意以后谈论性能的时候要找准位置,譬如这里性能的问题不是在调用 obtainMessage 和 sen
 dMessage 的方法上,而是调用他们之前对象的创建问题上。
-25.通过Calendar的工具类获取当前时间，首先获取该类的实例，然后通过get方法把
-Calendar的静态变量YEAR、MONTH等传进去即可。这里注意不能直接用该类实例的静态
+25.通过Calendar的工具类获取当前时间，首先获取该类的实例，然后通过get方法把Calendar的静态变量YEAR、MONTH等传进去即可。这里注意不能直接用该类实例的静态
 变量来获取，该变量的值只是键的值（一些整型数据），通过get方法来获取键对应的值。
-26.onKeyDown用来表示按住手机键的时候的事件。KeyEvent.KEYCODE_BACK表示
-返回键的事件发生。比如APP按两次退出的事件可以由该方法来执行。
+26.onKeyDown用来表示按住手机键的时候的事件。KeyEvent.KEYCODE_BACK表示返回键的事件发生。比如APP按两次退出的事件可以由该方法来执行。
 27.发送短信可以通过SmsManager类来执行，不需要进入系统短信界面，直接通过getDefault()获取该类的对象，
-然后把短信内容放入到该对象的divideMessage方法里面，进行短信内容拆分，然后遍历
-内容列表进行发送，通过sendTextMessage（）进行发送即可，该方法的第一个参数为对方手机号码
-。
+然后把短信内容放入到该对象的divideMessage方法里面，进行短信内容拆分，然后遍历内容列表进行发送，通过sendTextMessage（）进行发送即可，该方法的第一个参数为对方手机号码。
 28.TextView通过系统自带的Html类的fromHtml方法中把网页字符串放进去，即可实现TextView显示网页。
 如果要显示网页中image标签采用Html的imageGetter和TagHandler的对象来显示图片。
-29.SpannableStringBuilder都可以将某段文本设置成一个Span，在Android中，Span表示一段文本的效果，例如，链接形式、图像、带背景的文本等。
-只是不同的是SpannableStringBuilder可以修改文本的内容。
+29.SpannableStringBuilder都可以将某段文本设置成一个Span，在Android中，Span表示一段文本的效果，例如，链接形式、图像、带背景的文本等。只是不同的是SpannableStringBuilder可以修改文本的内容。
 30.subString的索引包前不包后，大部分截取函数都是如此。
 31.ListView中适配器的getView方法里面尽量不要采用耗时操作，否则可能会出现卡顿的现象。
-32.drawableleft/right/top/bottom只针对大部分控件，ListView也没有此属性，布局里面
-也没有这些属性。当该属性不生效的时候尝试放在设置背景图的前面。调用setCompoundDrawables时，
-必须调用Drawable.setBounds()方法,否则图片不显示
-33.应用程序用完摄像头后，请记得调用Camera.release()释放Camera对象！如果某应用程序
-未能正确释放摄像头，所有后续访问摄像头的尝试（包括此应用程序自身）都将会失败，并可
+32.drawableleft/right/top/bottom只针对大部分控件，ListView也没有此属性，布局里面也没有这些属性。当该属性不生效的时候尝试放在设置背景图的前面。调用setCompoundDrawables时，
+必须调用Drawable.setBounds()方法,否则图片不显示.
+33.应用程序用完摄像头后，请记得调用Camera.release()释放Camera对象！如果某应用程序未能正确释放摄像头，所有后续访问摄像头的尝试（包括此应用程序自身）都将会失败，并可
 能导致程序被强行关闭。
-34.每次使用Camera.open()时都要检查异常。如果摄像头被占用或者不存在，未检查异常将会
-导致应用程序被系统强行关闭。在运行Android 2.3 (API Level 9) 以上版本的设备上，可以
-用Camera.open(int)访问指定的摄像头。在拥有多于一个摄像头的设备上，以上示例代码将会
-访问第一个也即朝后的那个摄像头。
-35.百度地图应用步骤：申请百度API对应的AK的值，把AK的值在应用配置文件中以<meta-data>里面
-以键值对的形式赋值，名字为com.baidu.lbsapi.API_KEY的对应值为AK的值。特别注意申请的时候
+34.每次使用Camera.open()时都要检查异常。如果摄像头被占用或者不存在，未检查异常将会导致应用程序被系统强行关闭。在运行Android 2.3 (API Level 9) 以上版本的设备上，可以
+用Camera.open(int)访问指定的摄像头。在拥有多于一个摄像头的设备上，以上示例代码将会访问第一个也即朝后的那个摄像头。
+35.百度地图应用步骤：申请百度API对应的AK的值，把AK的值在应用配置文件中以<meta-data>里面以键值对的形式赋值，名字为com.baidu.lbsapi.API_KEY的对应值为AK的值。特别注意申请的时候
 安全码为Android工程中的SHA1的值。
 36.handler的sendEmptyMessage方法只发送Message对象的what的值。
 37.使用canvas画布画形状时，注意坐标原点默认是从屏幕左上角。向右和向下为正。
 38.AtomicBoolean 在这个Boolean值的变化的时候不允许在之间插入，保持操作的原子性方法。
-39.在程序出现异常时，debug窗口无法定位时，采用logcat里面的错误级别查找具体原因，单步或跳步执行的
-时候定位异常时，直接在异常里面查看异常类型即可锁定原因。
+39.在程序出现异常时，debug窗口无法定位时，采用logcat里面的错误级别查找具体原因，单步或跳步执行的时候定位异常时，直接在异常里面查看异常类型即可锁定原因。
 40.获取系统的布局解析器context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
