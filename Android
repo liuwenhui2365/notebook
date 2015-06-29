@@ -13,17 +13,20 @@ WebView中进行显示，而不是调用Android系统自带的浏览器进行访
 getParent().requestDisallowInterceptTouchEvent(true);
 禁止父控件对touch event做intercept解决的。
 6.通常onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化保存。
-7.Fragment的beginTransaction的方法和replaceFrag的方法基本一致，使用的时候注意beginTransaction的对象调用的add或remove的方法一定是new过的对象，
-不能是空对象，否则出现解析异常。
+7.Fragment的beginTransaction的方法和replaceFrag的方法基本一致，使用的时候注意beginTransaction的对象调用的add或remove的方法一定是new过的
+对象，不能是空对象，否则出现解析异常。
 8.Android中的bundle对象用来传输数据和对象。它的用法和Intent传递数据的方式基本一致，采用键值对的方式存储。
 9.Activity的 onSaveInstanceState() 和 onRestoreInstanceState()并不是生命周期方法，它们不同于 onCreate()、onPause()等生命周期方法，它们并不一
 定会被触发。当应用遇到意外情况（如：内存不足、用户直接按Home键）由系统销毁一个Activity时，onSaveInstanceState() 会被调用。但是当用户主动去销
-毁一个Activity时，例如在应用中按返回键，onSaveInstanceState()就不会被调用。因为在这种情况下，用户的行为决定了不需要保存Activity的状态。通常
+毁一个Activity时，例如在应用中按返回键，onSaveInstanceState()就不会被调用。因为在这种情况下，用户的行为决定了不需要保存Activity的状态。
+通常
 onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化保存。	
 10.ViewPager与ViewFlipper的区别：
-A、ViewPager（android.support.v4.view.ViewPager）与ViewFlow都能够使用适配器（ViewPager--PagerAdapter；ViewFlow--BaseAdapter）进行大量数据的
+A、ViewPager（android.support.v4.view.ViewPager）与ViewFlow都能够使用适配器（ViewPager--PagerAdapter；ViewFlow--BaseAdapter）进行大量
+数据的
 适配，并且ViewFlow也带有原点和标题的位置提示，二者比较相像；
-B、ViewFlipper使用时主要在有限的少数页面切换中比较合适，并且能够自定义每一个切换动画，用于一个应用间的画面切换比较合适，类似于ActvityGroup；
+B、ViewFlipper使用时主要在有限的少数页面切换中比较合适，并且能够自定义每一个切换动画，用于一个应用间的画面切换比较合适，类似于
+ActvityGroup；
 C、ViewFlow由于提供源码，所以在扩展上更强，可根据需要自行定制，比如加入循环播放等；
 D、当需要再一系列不确定数据的View中滑动时，可以考虑使用ViewFlow；如果View数目确定，应该改用Fragments或者兼容库里的ViewPager。
 11.在程序中使用mImageView.setImageDrawable(getResources().对ImageView设置属性的时候，
@@ -42,7 +45,8 @@ setCancelable(false)，再点击ProgressDialog以外的区域就不会出现前�
 17.如果要修改ListView的item的高度必须要设置android:minHeight="具体值"这样才行，直接设置高度无效．
 18.设置隐藏参数为View.GONE.TextView和ImageView一起使用，系统会提示不建议这样做，通过修改TextView
 的背景即可实现。
-19.java 中的instanceof 运算符是用来在运行时指出对象是否是特定类的一个实例。instanceof通过返回一个布尔值来指出，这个对象是否是这个特定类或者是它的子类的一个实例。
+19.java 中的instanceof 运算符是用来在运行时指出对象是否是特定类的一个实例。instanceof通过返回一个布尔值来指出，这个对象是否是这个特定类
+或者是它的子类的一个实例。
  用法：
 result = object instanceof class
 参数：
