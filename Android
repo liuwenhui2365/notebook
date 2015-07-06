@@ -96,5 +96,16 @@ dMessage 的方法上,而是调用他们之前对象的创建问题上。
 38.AtomicBoolean 在这个Boolean值的变化的时候不允许在之间插入，保持操作的原子性方法。
 39.在程序出现异常时，debug窗口无法定位时，采用logcat里面的错误级别查找具体原因，单步或跳步执行的时候定位异常时，直接在异常里面查看异常类型即可锁定原因。
 40.获取系统的布局解析器context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+41.在适配器里面解析布局可以采用传参的方式，也可以通过上下文获取系统服务中的Context.LAYOUT_INFLATER_SERVICE
+返回的对象即为布局解析器。适配器的notifyDataSetChanged的方法可以在自定义适配器中重写该方法，参数为适配器的数据。
+42.通过输入流将图片转为drawable,采用Drawable.createFromStream(inputStream, null);
+43.通过设置控件transcriptMode属性可以将Android平台的控件（支持ScrollBar）自动滑动到最底部。 
+44.在String文件中标签<string-array name="">里面嵌套item标签然后通过上下文对象的getResources().getStringArray(R.array.name的值)
+来获取数组里面的数据。
+45.根据Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)来判断sdcard是否存在。
+46.比较代码的时候注意编码格式一定要一致，否则会出现汉字编码乱码的问题。
+47.在使用FragmentManager的时候要注意一定要commit，否则页面不会加进去，如果获取beginTransaction的对象的时候，提交和添加等功能必须是
+同一个对象，否则页面不会显示，如果你采用getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment)，必须在后面加
+提交方法，不能再去采用上面的方法获取FragmentTranslation的对象，这样不是同一个对象。	
+48.Eclipse中出现非正常错误，由于符号问题导致的，就要考虑括号匹配的问题。
 
