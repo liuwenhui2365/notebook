@@ -108,4 +108,23 @@ dMessage 的方法上,而是调用他们之前对象的创建问题上。
 同一个对象，否则页面不会显示，如果你采用getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment)，必须在后面加
 提交方法，不能再去采用上面的方法获取FragmentTranslation的对象，这样不是同一个对象。	
 48.Eclipse中出现非正常错误，由于符号问题导致的，就要考虑括号匹配的问题。
+49.当出现R文件中找不到相应的布局或控件的时候注意是不是有style文件里面有错误或者
+对应的xml文件存在错误。
+50.控制editText的显示与隐藏采用setTransformationMethod(HideReturnsTransformationMethod.getInstance())。
+51.在eclipse的主配置文件中的Activity名字的值为包名加类名，而直接写类名是不行的，这样才能系统识别。
+52.拷贝自定义控件的时候，记得要把XML文件中对应的自定义包名改过来。否则会出现调用异常。
+53.拷贝过来的代码不需要的控件一定要注释完整，该控件对应的事件也要注释掉。
+54.TextView显示双引号需要加转义字符\。该控件加下划线和删除线
+getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);和Paint.STROKE_TEXT_FLAG。
+55.onclick事件三种方式：实现接口的方法，new接口的对象，定义接口的
+对象名，并new一个对象，然后把对象名传进去。
+56.配置文件里面的Activity标签有screenOrientation用来控制屏幕方向，portrait为竖屏。
+57.相对布局中如果对于某个控件进行上下或左右对比时，由于该控件还没有使用，可以采用相对于@+id的方式，然后在
+布局该控件的时候加上id即可。
+58.由FragmentActivity跳转到Fragment获取相应的值通过Bundle的对象来获取Intent自带的值，
+通过该对象的get里面的具体方法来实现。而Bundle对象是由getActivity.getIntent().getExtras()来获取。
+59.网络请求拒绝的时候检查一下是否开启权限。在开启HttpURLConnection.connect()会出现IO异常，可能原因是没有
+开启线程来访问获取图片。
+60.Fragment之间跳转返回时，在跳转到另一个fragment之前调用mFragmentManager.beginTransaction().addToBackStack(null);
+然后在目标fragment里面返回时调用mFragmentManager.popBackStack()相当于Activity中的finish（）；
 
