@@ -126,5 +126,6 @@ getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);和Paint.STROKE_TEXT_FLAG。
 59.网络请求拒绝的时候检查一下是否开启权限。在开启HttpURLConnection.connect()会出现IO异常，可能原因是没有
 开启线程来访问获取图片。
 60.Fragment之间跳转返回时，在跳转到另一个fragment之前调用mFragmentManager.beginTransaction().addToBackStack(null);
-然后在目标fragment里面返回时调用mFragmentManager.popBackStack()相当于Activity中的finish（）；
+然后在目标fragment里面返回时调用mFragmentManager.popBackStack()相当于Activity中的finish（)；这里特别注意添加到返回栈和跳转到的另一个fragment一定
+是同一个fragmentTransaction。
 
