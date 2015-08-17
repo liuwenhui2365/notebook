@@ -161,3 +161,38 @@ getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);和Paint.STROKE_TEXT_FLAG。
 onCreate方法中super即可调用父Activity的onCreate方法。
 77.TextView设置删除线setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 78.RadioButton中padding属性是针对文字的不是整个控件的。CheckBox也一样。
+79.有时候listview的item选中事件没有触发，查看是否有子控件抢占焦点，将子控件焦点给false即可。
+80.软键盘的隐藏方法InputMethodManager im = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE); 
+im.hideSoftInputFromWindow(mActivity.getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+如果没有软件盘显示则会出现获取当前焦点的时候为空指针。
+81.当需要对多个控件进行判断时，默认最后返回true，然后按顺序判断各个控件是否符合条件，如果不符合就返回false。
+82.fragment中调用不了runOnUIThread的方法可以通过getActivity的方法来获取调用该方法。
+83.在主Activity中设置跳转Fragment的事件时，必须在该事件里面进行一次获取FragmentManager然后再调用事务，因为每个Fragment的
+事务只能提交一次，必须重新开启另一个事务才可以。
+84.如果要设置Fragment的按键返回事件，可以根据FragmentManager的findFragmentById或ByTag方法来获取相应的Fragment，这时需要
+写一个方法用来将当前Fragment的实例对象传过来，然后获取相应的ID判断对象是否一致，然后重写按键返回事件。有时候如果继承默认的
+按键返回事件就会直接退出Activity，所以有时候需要调用FragmentManager的popBackStack（）。当然还要注意设置首个Fragment的返回。
+85.listView使用中会出现程序正常执行但还是崩溃的情况检查适配器的代码是否有误。
+86.判断一个类的实例是否是某个类的，采用关键字instanceof比较。
+87.EditText禁止用户复制粘贴只要禁用长按事件就可以实现。但是在API-11及以上的话，取消长按就不能完全有效了，最根本的是无效化
+选择的操作；代码如下：editText.setCustomSelectionActionModeCallback(new ActionMode.Callback(){}）即可。
+通过setSelection来设置光标的位置。
+88.当出现id与控件获取的id不一致时，即根据ID找到的控件强转为不符合对应的控件时，会直接导致崩溃,还有
+只要运行就会出错等非正常异常发生时，clean一下工程即可解决。
+89.想把当前控件覆盖后面的控件设置后面的padding为-1.
+90.自定义的listView的（item中id是从0开始，position是从1开始）itemClick事件中如果需要向另一个页面传数据则需要判断是否越界。
+91.从列表获取列表的数据对象时需要判断是否为空才能获取对象的值，否则会造成空指针异常。使用equals()的时候必须确保前面的不能
+为空。
+92.当出现图片重复显示的情况时检查是否在布局文件和代码文件同时设置了相同的图片。
+93.GridView的使用与ListView的使用方法基本相同，只是在布局文件中需要设置列数。
+94.ListView的item中margin不起作用的时候可以使用padding。上下拉刷新事件没有执行相应的事件时检查是否设置上下拉刷新事件。
+95.通过shape画出圆采用shape里面的属性shape设置为椭圆，然后设置子标签<size>来达到圆的效果。
+96.Fragment中返回时出现没有挂到Activity可能由于线程还在继续执行，比如定时器，关闭后在执行返回即可。
+97.CheckBox必须设置监听事件才能根据选中没选中进行动态判断，如果只是在初始化时判断则只执行一次。（特别要注意）有时候会发生
+正在执行点击事件里面的时候跳转到checkedchangeListener事件里面了,那是因为点击事件类里面修改了控件的checked状态导致执行相应
+的事件后出现该点击事件还没有执行完成就跳转到checkedchangedListener事件。
+98.关于页面跳转问题，如果在一个Activity里面的Fragment跳转只要在需要清除堆里面的Fragment的时候，清除的时候采用
+getBackStackEntryCount()方法获取堆里面的数量然后依次进行移除，采用popBackStack方法出堆。
+99.获取当前页面的Fragment可以采用FragmentManager的对象调用findFragmentById(),然后里面传入的是xml文件中frameLayout的id即可。
+100.在子线程里面如果出现Can't create handler inside thread that has not called Looper.prepare()，检查可能在子线程里面使用了
+UI的动作。
