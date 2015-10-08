@@ -9,22 +9,21 @@ handles Fragments contained within only the Fragment that it was added to.
 **同时注意:Fragment里面嵌套Fragment 的话：一定要用getChildFragmentManager();**
 4.采用WebView里面的一个方法setWebClient()，WebViewClient中的shouldOverrideUrlLoading()方法，实现了让新打开的网页在当前的
 WebView中进行显示，而不是调用Android系统自带的浏览器进行访问
-5.ViewPager嵌套引起子ViewPager无法触摸问题是通过在子ViewPager的onTouchEvent中添加getParent().requestDisallowInterceptTouchEvent(true);	
+5.ViewPager嵌套引起子ViewPager无法触摸问题是通过在子ViewPager的onTouchEvent中添加
 getParent().requestDisallowInterceptTouchEvent(true);
 禁止父控件对touch event做intercept解决的。
 6.通常onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化保存。
-7.Fragment的beginTransaction的方法和replaceFrag的方法基本一致，使用的时候注意beginTransaction的对象调用的add或remove的方法一定是new过的
-对象，不能是空对象，否则出现解析异常。
+7.Fragment的beginTransaction的方法和replaceFrag的方法基本一致，使用的时候注意beginTransaction的对象调用的add或remove的方法一定
+是new过的对象，不能是空对象，否则出现解析异常。
 8.Android中的bundle对象用来传输数据和对象。它的用法和Intent传递数据的方式基本一致，采用键值对的方式存储。
-9.Activity的 onSaveInstanceState() 和 onRestoreInstanceState()并不是生命周期方法，它们不同于 onCreate()、onPause()等生命周期方法，它们并不一
-定会被触发。当应用遇到意外情况（如：内存不足、用户直接按Home键）由系统销毁一个Activity时，onSaveInstanceState() 会被调用。但是当用户主动去销
-毁一个Activity时，例如在应用中按返回键，onSaveInstanceState()就不会被调用。因为在这种情况下，用户的行为决定了不需要保存Activity的状态。
-通常
-onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化保存。	
+9.Activity的 onSaveInstanceState() 和 onRestoreInstanceState()并不是生命周期方法，它们不同于 onCreate()、onPause()等生命周期方
+法，它们并不一定会被触发。当应用遇到意外情况（如：内存不足、用户直接按Home键）由系统销毁一个Activity时，onSaveInstanceState() 
+会被调用。但是当用户主动去销毁一个Activity时，例如在应用中按返回键，onSaveInstanceState()就不会被调用。因为在这种情况下，用户
+的行为决定了不需要保存Activity的状态。通常onSaveInstanceState()只适合用于保存一些临时性的状态，而onPause()适合用于数据的持久化
+保存。	
 10.ViewPager与ViewFlipper的区别：
-A、ViewPager（android.support.v4.view.ViewPager）与ViewFlow都能够使用适配器（ViewPager--PagerAdapter；ViewFlow--BaseAdapter）进行大量
-数据的
-适配，并且ViewFlow也带有原点和标题的位置提示，二者比较相像；
+A、ViewPager（android.support.v4.view.ViewPager）与ViewFlow都能够使用适配器（ViewPager--PagerAdapter；ViewFlow--BaseAdapter）
+进行大量数据的适配，并且ViewFlow也带有原点和标题的位置提示，二者比较相像；
 B、ViewFlipper使用时主要在有限的少数页面切换中比较合适，并且能够自定义每一个切换动画，用于一个应用间的画面切换比较合适，类似于
 ActvityGroup；
 C、ViewFlow由于提供源码，所以在扩展上更强，可根据需要自行定制，比如加入循环播放等；
@@ -45,21 +44,22 @@ setCancelable(false)，再点击ProgressDialog以外的区域就不会出现前�
 17.如果要修改ListView的item的高度必须要设置android:minHeight="具体值"这样才行，直接设置高度无效．
 18.设置隐藏参数为View.GONE.TextView和ImageView一起使用，系统会提示不建议这样做，通过修改TextView
 的背景即可实现。
-19.java 中的instanceof 运算符是用来在运行时指出对象是否是特定类的一个实例。instanceof通过返回一个布尔值来指出，这个对象是否是这个特定类
-或者是它的子类的一个实例。
+19.java 中的instanceof 运算符是用来在运行时指出对象是否是特定类的一个实例。instanceof通过返回一个布尔值来指出，这个对象是否是
+这个特定类或者是它的子类的一个实例。
  用法：
 result = object instanceof class
 参数：
 Result：布尔类型。
 Object：必选项。任意对象表达式。
 Class：必选项。任意已定义的对象类。
-说明：如果 object 是 class 的一个实例，则 instanceof 运算符返回 true。如果 object 不是指定类的一个实例，或者 object 是 null，则返回 false。
+说明：如果 object 是 class 的一个实例，则 instanceof 运算符返回 true。如果 object 不是指定类的一个实例，或者 object 是 null，
+则返回 false。
 20.如果调用的是系统适配器没有自定义，那么布局也需要使用系统自带的才能实现数据填充，比如Spinner控件。
 继承ArrayAdapter时通过getView的方法为下拉布局添加数据，注意getItem（）来获取传进了的链表数据的每一项的值，填充到每一行子控件中。
-弹出来的下拉窗口，这个是复写ArrayAdapter的getDropDownView()方法来实现的，也可以通过新建一个下拉布局文件也可，该布局只能放控件不能设置布局类型，并且该布局只能是TextView，把它的ID传进去即可。
-简而言之就是设置下拉布局文件的ID必须是TextView的ID。
-21.如果两个控件的适配器要求一致的话，可以使用同一个适配器，然后只有new一个数据的对象即可。注意千万不能用原来的数据对象清空来实现，因为getView的方法在每次显示都会调用
-那么数据就会显示的是后面添加的。
+弹出来的下拉窗口，这个是复写ArrayAdapter的getDropDownView()方法来实现的，也可以通过新建一个下拉布局文件也可，该布局只能放控件
+不能设置布局类型，并且该布局只能是TextView，把它的ID传进去即可。简而言之就是设置下拉布局文件的ID必须是TextView的ID。
+21.如果两个控件的适配器要求一致的话，可以使用同一个适配器，然后只有new一个数据的对象即可。注意千万不能用原来的数据对象清空来实
+现，因为getView的方法在每次显示都会调用那么数据就会显示的是后面添加的。
 22.调用Dialog的时候会出现InvocationTargetException时，观察传进去的参数，该构造方法第一个参数为Activity的对象，不是上下文的对象。
 23.如果一个接口的方法没有被执行有两种情况，没有实例化接口的对象，或者没有声明实现接口里面的方法。
 24.handler的obtainMessage的使用：看源码的注释，
@@ -73,28 +73,32 @@ Class：必选项。任意已定义的对象类。
 建Message，不要自己New Message 至于message产生之后你使用obtainMessage 或者是 sendMessage 效率影响
 并不大.同时我们也要注意以后谈论性能的时候要找准位置,譬如这里性能的问题不是在调用 obtainMessage 和 sen
 dMessage 的方法上,而是调用他们之前对象的创建问题上。
-25.通过Calendar的工具类获取当前时间，首先获取该类的实例，然后通过get方法把Calendar的静态变量YEAR、MONTH等传进去即可。这里注意不能直接用该类实例的静态
-变量来获取，该变量的值只是键的值（一些整型数据），通过get方法来获取键对应的值。
+25.通过Calendar的工具类获取当前时间，首先获取该类的实例，然后通过get方法把Calendar的静态变量YEAR、MONTH等传进去即可。这里注意不
+能直接用该类实例的静态变量来获取，该变量的值只是键的值（一些整型数据），通过get方法来获取键对应的值。
 26.onKeyDown用来表示按住手机键的时候的事件。KeyEvent.KEYCODE_BACK表示返回键的事件发生。比如APP按两次退出的事件可以由该方法来执行。
 27.发送短信可以通过SmsManager类来执行，不需要进入系统短信界面，直接通过getDefault()获取该类的对象，
-然后把短信内容放入到该对象的divideMessage方法里面，进行短信内容拆分，然后遍历内容列表进行发送，通过sendTextMessage（）进行发送即可，该方法的第一个参数为对方手机号码。
+然后把短信内容放入到该对象的divideMessage方法里面，进行短信内容拆分，然后遍历内容列表进行发送，通过sendTextMessage（）进行发送
+即可，该方法的第一个参数为对方手机号码。
 28.TextView通过系统自带的Html类的fromHtml方法中把网页字符串放进去，即可实现TextView显示网页。
 如果要显示网页中image标签采用Html的imageGetter和TagHandler的对象来显示图片。
-29.SpannableStringBuilder都可以将某段文本设置成一个Span，在Android中，Span表示一段文本的效果，例如，链接形式、图像、带背景的文本等。只是不同的是SpannableStringBuilder可以修改文本的内容。
+29.SpannableStringBuilder都可以将某段文本设置成一个Span，在Android中，Span表示一段文本的效果，例如，链接形式、图像、带背景的文
+本等。只是不同的是SpannableStringBuilder可以修改文本的内容。
 30.subString的索引包前不包后，大部分截取函数都是如此。
 31.ListView中适配器的getView方法里面尽量不要采用耗时操作，否则可能会出现卡顿的现象。
-32.drawableleft/right/top/bottom只针对大部分控件，ListView也没有此属性，布局里面也没有这些属性。当该属性不生效的时候尝试放在设置背景图的前面。调用setCompoundDrawables时，
-必须调用Drawable.setBounds()方法,否则图片不显示.
-33.应用程序用完摄像头后，请记得调用Camera.release()释放Camera对象！如果某应用程序未能正确释放摄像头，所有后续访问摄像头的尝试（包括此应用程序自身）都将会失败，并可
-能导致程序被强行关闭。
-34.每次使用Camera.open()时都要检查异常。如果摄像头被占用或者不存在，未检查异常将会导致应用程序被系统强行关闭。在运行Android 2.3 (API Level 9) 以上版本的设备上，可以
-用Camera.open(int)访问指定的摄像头。在拥有多于一个摄像头的设备上，以上示例代码将会访问第一个也即朝后的那个摄像头。
-35.百度地图应用步骤：申请百度API对应的AK的值，把AK的值在应用配置文件中以<meta-data>里面以键值对的形式赋值，名字为com.baidu.lbsapi.API_KEY的对应值为AK的值。特别注意申请的时候
-安全码为Android工程中的SHA1的值。
+32.drawableleft/right/top/bottom只针对大部分控件，ListView也没有此属性，布局里面也没有这些属性。当该属性不生效的时候尝试放在设
+置背景图的前面。调用setCompoundDrawables时，必须调用Drawable.setBounds()方法,否则图片不显示.
+33.应用程序用完摄像头后，请记得调用Camera.release()释放Camera对象！如果某应用程序未能正确释放摄像头，所有后续访问摄像头的尝试
+（包括此应用程序自身）都将会失败，并可能导致程序被强行关闭。
+34.每次使用Camera.open()时都要检查异常。如果摄像头被占用或者不存在，未检查异常将会导致应用程序被系统强行关闭。在运行Android 2.3 
+(API Level 9) 以上版本的设备上，可以用Camera.open(int)访问指定的摄像头。在拥有多于一个摄像头的设备上，以上示例代码将会访问第一
+个也即朝后的那个摄像头。
+35.百度地图应用步骤：申请百度API对应的AK的值，把AK的值在应用配置文件中以<meta-data>里面以键值对的形式赋值，名字为
+com.baidu.lbsapi.API_KEY的对应值为AK的值。特别注意申请的时候安全码为Android工程中的SHA1的值。
 36.handler的sendEmptyMessage方法只发送Message对象的what的值。
 37.使用canvas画布画形状时，注意坐标原点默认是从屏幕左上角。向右和向下为正。
 38.AtomicBoolean 在这个Boolean值的变化的时候不允许在之间插入，保持操作的原子性方法。
-39.在程序出现异常时，debug窗口无法定位时，采用logcat里面的错误级别查找具体原因，单步或跳步执行的时候定位异常时，直接在异常里面查看异常类型即可锁定原因。
+39.在程序出现异常时，debug窗口无法定位时，采用logcat里面的错误级别查找具体原因，单步或跳步执行的时候定位异常时，直接在异常里面
+查看异常类型即可锁定原因。
 40.获取系统的布局解析器context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 41.在适配器里面解析布局可以采用传参的方式，也可以通过上下文获取系统服务中的Context.LAYOUT_INFLATER_SERVICE
 返回的对象即为布局解析器。适配器的notifyDataSetChanged的方法可以在自定义适配器中重写该方法，参数为适配器的数据。
@@ -104,9 +108,9 @@ dMessage 的方法上,而是调用他们之前对象的创建问题上。
 来获取数组里面的数据。
 45.根据Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)来判断sdcard是否存在。
 46.比较代码的时候注意编码格式一定要一致，否则会出现汉字编码乱码的问题。
-47.在使用FragmentManager的时候要注意一定要commit，否则页面不会加进去，如果获取beginTransaction的对象的时候，提交和添加等功能必须是
-同一个对象，否则页面不会显示，如果你采用getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment)，必须在后面加
-提交方法，不能再去采用上面的方法获取FragmentTranslation的对象，这样不是同一个对象。	
+47.在使用FragmentManager的时候要注意一定要commit，否则页面不会加进去，如果获取beginTransaction的对象的时候，提交和添加等功能必
+须是同一个对象，否则页面不会显示，如果你采用getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment)，
+必须在后面加提交方法，不能再去采用上面的方法获取FragmentTranslation的对象，这样不是同一个对象。	
 48.Eclipse中出现非正常错误，由于符号问题导致的，就要考虑括号匹配的问题。
 49.当出现R文件中找不到相应的布局或控件的时候注意是不是有style文件里面有错误或者
 对应的xml文件存在错误。
@@ -126,8 +130,8 @@ getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);和Paint.STROKE_TEXT_FLAG。
 59.网络请求拒绝的时候检查一下是否开启权限。在开启HttpURLConnection.connect()会出现IO异常，可能原因是没有
 开启线程来访问获取图片。
 60.Fragment之间跳转返回时，在跳转到另一个fragment之前调用mFragmentManager.beginTransaction().addToBackStack(null);
-然后在目标fragment里面返回时调用mFragmentManager.popBackStack()相当于Activity中的finish（)；这里特别注意添加到返回栈和跳转到的另一个fragment一定
-是同一个fragmentTransaction。
+然后在目标fragment里面返回时调用mFragmentManager.popBackStack()相当于Activity中的finish（)；这里特别注意添加到返回
+栈和跳转到的另一个fragment一定是同一个fragmentTransaction。
 61.fragment返回时由于已经被回收所以要重新获取值，这样由后面的fragment跳转回来的就
 要再次赋值，才能获取相应的值，所以从其他Fragment获取到对象时，不要对该对象做删除
 里面的元素否则返回来的时候会获取不到值，只有这样才能实现从其他Fragment返回到该Fragment不发生
